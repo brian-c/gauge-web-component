@@ -1,0 +1,9 @@
+{
+	"main": "gauge.js",
+	"scripts": {
+		"start": "static"
+	},
+	"devDependencies": {
+		"node-static": "^0.7.11"
+	}
+}

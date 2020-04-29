@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<title>Gauge web component</title>
+
+<style>
+	[contenteditable] {
+		outline: 1px dotted #8883;
+	}
+</style>
+
+<script type="module">
+	import Gauge from './gauge.js';
+	customElements.define('bc-gauge', Gauge);
+</script>
+
+<h1>Gauge web component</h1>
+
+<div style="margin: 0 auto; width: 75%;">
+	<bc-gauge id="gauge">
+		<p style="font-size: 3em;" contenteditable="true">Content here and...</p>
+		<p slot="icon" contenteditable="true">...in the opening</p>
+	</bc-gauge>
+</div>
+
+<form id="knobs">
+	<h2>Attributes</h2>
+
+	<ul>
+		<li>
+			<label>
+				<code>value</code>
+				<br />
+				<input type="number" name="value" min="0" step="0.01" value="0.67" />
+			</label>
+		</li>
+		<li>
+			<label>
+				<code>max</code>
+				<br />
+				<input type="number" name="max" min="0" step="0.1" value="1" />
+			</label>
+		</li>
+		<li>
+			<label>
+				<code>ticks</code>
+				<br />
+				<input type="text" name="ticks" value="0.5, 0.6, 0.7, 0.8, 0.9" />
+			</label>
+		</li>
+	</ul>
+
+	<h2>CSS properties</h2>
+
+	<ul>
+		<li>
+			<label>
+				<code>--gap</code>
+				<br />
+				<input name="--gap" value="1ch" />
+			</label>
+		</li>
+		<li>
+			<label>
+				<code>--track-width</code>
+				<br />
+				<input name="--track-width" value="1em" />
+			</label>
+		</li>
+		<li>
+			<label>
+				<code>--track-fill</code>
+				<br />
+				<input name="--track-fill" value="#8884" />
+			</label>
+		</li>
+		<li>
+			<label>
+				<code>--value-fill</code>
+				<br />
+				<input name="--value-fill" value="orangered" />
+			</label>
+		</li>
+	</ul>
+</form>
+
+<script>
+	function reflectInputs() {
+		const knobs = document.querySelectorAll('#knobs input');
+		const gauge = document.getElementById('gauge');
+
+		knobs.forEach(input => {
+			if (input.name.startsWith('--')) {
+				gauge.style.setProperty(input.name, input.value);
+			} else {
+				gauge[input.name] = input.value;
+			}
+		});
+
+		gauge.update();
+	}
+
+	addEventListener('load', reflectInputs);
+	addEventListener('resize', reflectInputs);
+	gauge.addEventListener('input', reflectInputs);
+	document.getElementById('knobs').addEventListener('input', reflectInputs);
+</script>
