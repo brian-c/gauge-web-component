@@ -1,106 +1,148 @@
 <!DOCTYPE html>
-<meta charset="UTF-8" />
-<title>Gauge web component</title>
 
-<style>
-	[contenteditable] {
-		outline: 1px dotted #8883;
-	}
-</style>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Gauge web component</title>
 
-<script type="module">
-	import Gauge from './gauge.js';
-	customElements.define('bc-gauge', Gauge);
-</script>
-
-<h1>Gauge web component</h1>
-
-<div style="margin: 0 auto; width: 75%;">
-	<bc-gauge id="gauge">
-		<p style="font-size: 3em;" contenteditable="true">Content here and...</p>
-		<p slot="icon" contenteditable="true">...in the opening</p>
-	</bc-gauge>
-</div>
-
-<form id="knobs">
-	<h2>Attributes</h2>
-
-	<ul>
-		<li>
-			<label>
-				<code>value</code>
-				<br />
-				<input type="number" name="value" min="0" step="0.01" value="0.67" />
-			</label>
-		</li>
-		<li>
-			<label>
-				<code>max</code>
-				<br />
-				<input type="number" name="max" min="0" step="0.1" value="1" />
-			</label>
-		</li>
-		<li>
-			<label>
-				<code>ticks</code>
-				<br />
-				<input type="text" name="ticks" value="0.5, 0.6, 0.7, 0.8, 0.9" />
-			</label>
-		</li>
-	</ul>
-
-	<h2>CSS properties</h2>
-
-	<ul>
-		<li>
-			<label>
-				<code>--gap</code>
-				<br />
-				<input name="--gap" value="1ch" />
-			</label>
-		</li>
-		<li>
-			<label>
-				<code>--track-width</code>
-				<br />
-				<input name="--track-width" value="1em" />
-			</label>
-		</li>
-		<li>
-			<label>
-				<code>--track-fill</code>
-				<br />
-				<input name="--track-fill" value="#8884" />
-			</label>
-		</li>
-		<li>
-			<label>
-				<code>--value-fill</code>
-				<br />
-				<input name="--value-fill" value="orangered" />
-			</label>
-		</li>
-	</ul>
-</form>
-
-<script>
-	function reflectInputs() {
-		const knobs = document.querySelectorAll('#knobs input');
-		const gauge = document.getElementById('gauge');
-
-		knobs.forEach(input => {
-			if (input.name.startsWith('--')) {
-				gauge.style.setProperty(input.name, input.value);
-			} else {
-				gauge[input.name] = input.value;
+		<style>
+			body {
+				text-align: center;
 			}
-		});
 
-		gauge.update();
-	}
+			#gauge {
+				max-width: 67vmin;
+				width: 50ch;
+			}
 
-	addEventListener('load', reflectInputs);
-	addEventListener('resize', reflectInputs);
-	gauge.addEventListener('input', reflectInputs);
-	document.getElementById('knobs').addEventListener('input', reflectInputs);
-</script>
+			[contenteditable] {
+				border: 1px solid #8886;
+				box-shadow: 0 1px 3px -1px inset #0003;
+				padding: 0 0.5ch;
+			}
+
+			#knobs {
+				display: inline-flex;
+				text-align: start;
+			}
+
+			#knobs ul {
+				padding-left: 1ch;
+			}
+
+			#knobs li {
+				margin-bottom: 1em;
+			}
+		</style>
+
+		<script type="module">
+			import Gauge from './gauge.js';
+			customElements.define('bc-gauge', Gauge);
+		</script>
+	</head>
+
+	<body>
+		<h1>Gauge web component</h1>
+
+		<bc-gauge id="gauge">
+			<p style="font-size: 3em;" contenteditable="true">Content here and...</p>
+			<p slot="icon" contenteditable="true">...in the opening</p>
+		</bc-gauge>
+
+		<hr />
+
+		<form id="knobs">
+			<fieldset>
+				<legend>Attributes</legend>
+
+				<ul>
+					<li>
+						<label>
+							<code>value</code>
+							<br />
+							<input type="number" name="value" min="0" step="0.01" value="0.67" />
+						</label>
+					</li>
+
+					<li>
+						<label>
+							<code>max</code>
+							<br />
+							<input type="number" name="max" min="0" step="0.1" value="1" />
+						</label>
+					</li>
+
+					<li>
+						<label>
+							<code>ticks</code>
+							<br />
+							<input type="text" name="ticks" value="0.5, 0.6, 0.7, 0.8, 0.9" />
+						</label>
+					</li>
+				</ul>
+			</fieldset>
+
+			<fieldset>
+				<legend>CSS properties</legend>
+
+				<ul>
+					<li>
+						<label>
+							<code>--gap</code>
+							<br />
+							<input name="--gap" value="1ch" />
+						</label>
+					</li>
+
+					<li>
+						<label>
+							<code>--track-width</code>
+							<br />
+							<input name="--track-width" value="1em" />
+						</label>
+					</li>
+
+					<li>
+						<label>
+							<code>--track-fill</code>
+							<br />
+							<input name="--track-fill" value="#8884" />
+						</label>
+					</li>
+
+					<li>
+						<label>
+							<code>--value-fill</code>
+							<br />
+							<input name="--value-fill" value="orangered" />
+						</label>
+					</li>
+				</ul>
+			</fieldset>
+		</form>
+
+		<script type="module">
+			function reflectInputs() {
+				const knobs = document.querySelectorAll('#knobs input');
+				const gauge = document.getElementById('gauge');
+
+				knobs.forEach(input => {
+					if (input.name.startsWith('--')) {
+						gauge.style.setProperty(input.name, input.value);
+					} else {
+						gauge[input.name] = input.value;
+					}
+				});
+
+				// Manually update, for now:
+				gauge.update();
+			}
+
+			addEventListener('load', reflectInputs);
+			addEventListener('resize', reflectInputs);
+			gauge.addEventListener('input', reflectInputs);
+			document.getElementById('knobs').addEventListener('input', reflectInputs);
+		</script>
+	</body>
+</html>

@@ -12,7 +12,7 @@ const TEMPLATE = html`
 			--track-fill: #8888;
 			--value-fill: currentColor;
 
-			display: block;
+			display: inline-block;
 		}
 
 		#container {
